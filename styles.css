@@ -39,17 +39,15 @@ body {
 
     margin: 10px 4px;
 
+    transition: all 0.5s;
+
     z-index: 0;
 }
 
-.cards-container .card {
-    cursor: pointer;
-    transition: all 0.5s;
-}
-
-.cards-container .card:hover {
+.my-turn.card:hover {
     box-shadow: 1px 11px 13px rgba(0,0,0,0.8);
     transform: translateY(-20px);
+    cursor: pointer;
 }
 
 .card:before {
