@@ -3,6 +3,29 @@ body {
     background-color: rgb(156, 156, 156);
 }
 
+.table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    top: 50%;
+    left: calc( 50% - 220px );
+    transform: translateY(-60%);
+}
+
+.table ion-icon {
+    font-size: 440px;
+    color: rgba(73, 73, 73, 0.911);
+    filter: drop-shadow( 3px 3px 3px rgba(0,0,0,0.8));
+    transform: rotateY(0deg);
+    transition: transform 0.5s;
+}
+
+.inverse.table ion-icon {
+    transform: rotateY(180deg);
+}
+
 .table-card {
     display: flex;
     align-items: center;
@@ -19,6 +42,11 @@ body {
     align-items: center;
     justify-content: center;
 
+    /* max-width: 100%; */
+    /* flex: 0 0 50px; */
+    /* overflow: hidden; */
+    /* overflow-x: scroll; */
+
     position: absolute;
     bottom: 0px;
     left: 50%;
@@ -26,6 +54,7 @@ body {
 }
 
 .card {
+    min-width: 110px;
     width: 110px;
     height: 146px;
 
@@ -76,4 +105,136 @@ body {
     filter: drop-shadow( 3px 3px 3px rgba(0,0,0,0.8) );
 
     z-index: 2;
+}
+
+/*  */
+/*  */
+/*  */
+
+.player-2,
+.player-3,
+.player-4 {
+    width: 250px;
+    height: 250px;
+    background-color: rgb(255, 255, 255);
+    font-size: 30px;
+    position: absolute;
+    margin: 10px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.turnOf.player-2,
+.turnOf.player-3,
+.turnOf.player-4 {
+    border: 2px solid green;
+}
+
+.player-2 {
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.player-3 {
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.player-4 {
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.choose-color-window {
+    background-color: rgba(43, 43, 43, 0.788);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.choose-color-window.hide {
+    display: none;
+}
+
+.colors-container {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background-color: rgb(121, 121, 121);
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.color {
+    box-sizing: border-box;
+    width: 50%;
+    height: 50%;
+    transform: scale(0.98);
+    border: 1px solid black;
+
+    transition: all 0.4s;
+}
+
+.color:hover {
+    transform: scale(1.02);
+}
+
+.color.red {
+    background-color: darkred;
+    border-radius: 100% 3% 3% 3%;
+    filter: drop-shadow( -2px -2px 2px rgba(0,0,0,0.8));
+}
+
+.color.yellow {
+    background-color: orange;
+    border-radius: 3% 100% 3% 3%;
+    filter: drop-shadow( 2px -2px 2px rgba(0,0,0,0.8));
+}
+
+.color.green {
+    background-color: darkgreen;
+    border-radius: 3% 3% 3% 100%;
+    filter: drop-shadow( -2px 2px 2px rgba(0,0,0,0.8));
+}
+
+.color.blue {
+    background-color: darkblue;
+    border-radius: 3% 3% 100% 3%;
+    filter: drop-shadow( 4px 4px 4px rgba(0,0,0,0.8));
+}
+
+
+
+.color.red:hover {
+    background-color: rgb(199, 3, 3);
+    filter: drop-shadow( -4px -4px 4px rgba(0,0,0,0.8));
+}
+
+.color.yellow:hover {
+    background-color: rgb(255, 230, 0);
+    filter: drop-shadow( 4px -4px 4px rgba(0,0,0,0.8));
+}
+
+.color.green:hover {
+    background-color: rgb(2, 172, 2);
+    filter: drop-shadow( -4px 4px 4px rgba(0,0,0,0.8));
+}
+
+.color.blue:hover {
+    background-color: rgb(0, 0, 185);
+    filter: drop-shadow( 4px 4px 4px rgba(0,0,0,0.8));
 }
