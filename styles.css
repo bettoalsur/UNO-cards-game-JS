@@ -1,6 +1,6 @@
 
 body {
-    background-color: rgb(156, 156, 156);
+    background-color: #e2e2e2;
     overflow: hidden;
 }
 
@@ -14,13 +14,14 @@ body {
     position: absolute;
     top: 50%;
     left: calc( 50% - 220px );
-    transform: translateY(-60%);
+    transform: translateY(-58%);
 }
 
 .table ion-icon {
     font-size: 440px;
-    color: rgba(73, 73, 73, 0.911);
+    opacity: 0.4;
     filter: drop-shadow( 3px 3px 3px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( 3px 3px 3px rgba(0,0,0,0.8));
     transform: rotateY(0deg);
     transition: transform 0.5s;
 }
@@ -127,6 +128,7 @@ body {
     font-size: 65px;
 
     filter: drop-shadow( 3px 3px 3px rgba(0,0,0,0.8) );
+    -webkit-filter: drop-shadow( 3px 3px 3px rgba(0,0,0,0.8) );
 
     z-index: 2;
 }
@@ -135,12 +137,26 @@ body {
 /*  */
 /*  */
 
+.winner.player-2 .card,
+.winner.player-3 .card,
+.winner.player-4 .card {
+    border: 2px solid green;
+    box-shadow: 0px 0px 10px rgba(0, 255, 0, 1);
+}
+
+.winner.player-2 .card .logo,
+.winner.player-3 .card .logo,
+.winner.player-4 .card .logo {
+    font-size: 54px;
+    filter: drop-shadow( 0px 0px 2px rgb(2, 199, 2) );
+    -webkit-filter: drop-shadow( 0px 0px 2px rgb(2, 199, 2) );
+}
+
 .player-2,
 .player-3,
 .player-4 {
     width: 250px;
     height: 250px;
-    background-color: rgb(255, 255, 255);
     font-size: 30px;
     position: absolute;
     margin: 10px;
@@ -148,28 +164,54 @@ body {
     box-sizing: border-box;
 }
 
-.turnOf.player-2,
-.turnOf.player-3,
-.turnOf.player-4 {
-    border: 2px solid green;
+.turnOf.player-2 .light,
+.turnOf.player-3 .light,
+.turnOf.player-4 .light {
+    border: 1px solid green;
+    background-color: rgb(18, 199, 18);
+}
+
+.blocked.player-2 .light,
+.blocked.player-3 .light,
+.blocked.player-4 .light {
+    border: 1px solid orangered;
+    background-color: rgb(252, 135, 40);
+}
+
+.player-2 .light,
+.player-3 .light,
+.player-4 .light {
+    width: 20px;
+    height: 20px;
+    background-color: lightgrey;
+    border: 1px solid gray;
+    margin: 10px 10px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.8);
+    transition: all 0.4s;
 }
 
 .player-2 {
     left: 0px;
     top: 50%;
     transform: translateY(-50%);
+    display: flex;
 }
 
 .player-3 {
     top: 0px;
     left: 50%;
-    transform: translateX(-50%);
+    display: flex;
+    justify-content: flex-end;
 }
 
 .player-4 {
     right: 0px;
     top: 50%;
     transform: translateY(-50%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
 }
 
 /*  */
@@ -225,24 +267,28 @@ body {
     background-color: darkred;
     border-radius: 100% 3% 3% 3%;
     filter: drop-shadow( -2px -2px 2px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( -2px -2px 2px rgba(0,0,0,0.8));
 }
 
 .color.yellow {
     background-color: orange;
     border-radius: 3% 100% 3% 3%;
     filter: drop-shadow( 2px -2px 2px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( 2px -2px 2px rgba(0,0,0,0.8));
 }
 
 .color.green {
     background-color: darkgreen;
     border-radius: 3% 3% 3% 100%;
     filter: drop-shadow( -2px 2px 2px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( -2px 2px 2px rgba(0,0,0,0.8));
 }
 
 .color.blue {
     background-color: darkblue;
     border-radius: 3% 3% 100% 3%;
-    filter: drop-shadow( 4px 4px 4px rgba(0,0,0,0.8));
+    filter: drop-shadow( 2px 2px 2px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( 2px 2px 2px rgba(0,0,0,0.8));
 }
 
 
@@ -250,21 +296,25 @@ body {
 .color.red:hover {
     background-color: rgb(199, 3, 3);
     filter: drop-shadow( -4px -4px 4px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( -4px -4px 4px rgba(0,0,0,0.8));
 }
 
 .color.yellow:hover {
     background-color: rgb(255, 230, 0);
     filter: drop-shadow( 4px -4px 4px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( 4px -4px 4px rgba(0,0,0,0.8));
 }
 
 .color.green:hover {
     background-color: rgb(2, 172, 2);
     filter: drop-shadow( -4px 4px 4px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( -4px 4px 4px rgba(0,0,0,0.8));
 }
 
 .color.blue:hover {
     background-color: rgb(0, 0, 185);
     filter: drop-shadow( 4px 4px 4px rgba(0,0,0,0.8));
+    -webkit-filter: drop-shadow( 4px 4px 4px rgba(0,0,0,0.8));
 }
 
 /*  */
@@ -275,12 +325,14 @@ body {
     display: flex;
     align-items: center;
     position: relative;
+    left: 170px;
 }
 
 .deck .card.frente {
     transform: scale(0.9) rotateY(180deg);
     margin: 5px 5px;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     position: absolute;
     top: 0;
 }
@@ -290,8 +342,18 @@ body {
     transform: scale(0.9);
     margin: 5px 5px;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     position: absolute;
     top: 0;
+}
+
+.deck .card.verso .logo {
+    font-size: 32px;
+}
+
+.deck.my-time .card.verso {
+    border: 1px solid orangered;
+    box-shadow: 0px 0px 10px rgb(252, 135, 40);;
 }
 
 .deck.my-time .card.verso:hover {
@@ -306,3 +368,13 @@ body {
     transform: scale(0.9) rotateY(180deg);
 }
 
+/*  */
+/*  */
+/*  */
+
+.player-2 .card,
+.player-3 .card,
+.player-4 .card {
+    background-color: rgb(145, 107, 107); 
+    transform: scale(0.9);
+}

@@ -107,7 +107,7 @@ function renderDeck() {
 
     <div class="card verso">
         <div class="logo">
-            &#960
+            UNO
         </div>
     </div>
     <div style="background-color: ${carta.color};" class="card frente">
@@ -115,10 +115,11 @@ function renderDeck() {
             ${symbolHTML}
         </div>
     </div>
-    `;
+    `; // &#960
 }
 
 function renderTable() {
+
     let tableCard = document.getElementById("tableCard");
 
     let symbolHTML;
@@ -139,6 +140,9 @@ function renderTable() {
         </div>
     </div>
     `;
+
+    let turnLogo = document.querySelector(".table ion-icon");
+    turnLogo.style.color = carta.color;
 }
 
 function sortCardsOnContainer(){
@@ -204,13 +208,10 @@ function renderOtherPlayers() {
     for(let numPlayer = 1; numPlayer < 4; numPlayer++){
 
         let element = document.querySelector(".player-"+(numPlayer+1));
-        element.innerHTML = "";
-
-        for(let card of players[numPlayer]){
-            element.innerHTML += `
-            <p style="color: ${card.color};"> ${card.symbol}</p> 
-            `;
-        }
+        let logo = element.querySelector(".logo");
+        
+        if (players[numPlayer].length > 0) logo.innerHTML = players[numPlayer].length + "";
+        else logo.innerHTML = "WINS"; 
     }
 }
 
@@ -278,6 +279,8 @@ function handleTurn() {
         let player = players[i];
         if (player.length == 0) {
             console.log(`PLAYER ${i+1} WINS!!`);
+            if (i!=0) document.querySelector(".player-"+(i+1)).classList.add("winner");
+            else window.open("https://editor.p5js.org/metilbenceno/full/HLjn5u_O4");
             return;
         }
     }
@@ -442,22 +445,28 @@ function handlePowerUps(selectedCard) {
 
     if (selectedCard.symbol == "block") {
         turn += direction;
-        turn += direction;
-        handleTurn();
-        return;
+        if(turn%4 != 0) document.querySelector(".player-"+(turn%4+1)).classList.add("blocked");
+        setTimeout(() => {
+            if(turn%4 != 0) document.querySelector(".player-"+(turn%4+1)).classList.remove("blocked");
+            turn += direction;
+            handleTurn();
+            return;
+        },1000);
     }
 
     if (selectedCard.symbol == "p2") {
         turn += direction;
+        if(turn%4 != 0) document.querySelector(".player-"+(turn%4+1)).classList.add("blocked");
         takeCard();
         takeCard();
         setTimeout(() => {
+            if(turn%4 != 0) document.querySelector(".player-"+(turn%4+1)).classList.remove("blocked");
             turn += direction;
             renderOtherPlayers();
             renderUserCards();
             handleTurn();
             return;
-        },500);
+        },1000);
     }
 
     if (selectedCard.symbol == "changeColor" || selectedCard.symbol == "p4") {
@@ -500,18 +509,20 @@ function chooseColor(selectedCard) {
             table.push(card);
             renderTable();
 
-            if ( selectedCard.symbol == "p4") {
+            if ( selectedCard.symbol == "p4" ) {
                 turn += direction;
+                if(turn%4 != 0) document.querySelector(".player-"+(turn%4+1)).classList.add("blocked");
                 takeCard();
                 takeCard();
                 takeCard();
                 takeCard();
                 setTimeout(() => {
+                    if(turn%4 != 0) document.querySelector(".player-"+(turn%4+1)).classList.remove("blocked");
                     turn += direction;
                     renderOtherPlayers();
                     handleTurn();
                     return;
-                },500);
+                },1000);
             } else {
                 turn += direction;
                 handleTurn();
@@ -519,7 +530,16 @@ function chooseColor(selectedCard) {
             }
         }));
     } else {
-        let chosenColor = colors[Math.floor( Math.random(colors.length) )]
+        let cardsOfPlayer = players[currentPlayer];
+        let numCardsEachColor = [];
+        colors.forEach(color => {
+            let cardsSameColor = cardsOfPlayer.filter(card => card.color == color);
+            numCardsEachColor.push( cardsSameColor.length );
+        });
+
+        let index = numCardsEachColor.indexOf(Math.max(...numCardsEachColor));
+        let chosenColor = colors[index];
+
         table.pop();
         let card = {
             color: chosenColor,
@@ -530,17 +550,19 @@ function chooseColor(selectedCard) {
 
         if ( selectedCard.symbol == "p4") {
             turn += direction;
+            if(turn%4 != 0) document.querySelector(".player-"+(turn%4+1)).classList.add("blocked");
             takeCard();
             takeCard();
             takeCard();
             takeCard();
             setTimeout(() => {
+                if(turn%4 != 0) document.querySelector(".player-"+(turn%4+1)).classList.remove("blocked");
                 turn += direction;
                 renderOtherPlayers();
                 renderUserCards();
                 handleTurn();
                 return;
-            },500);
+            },1000);
         } else {
             turn += direction;
             handleTurn();
