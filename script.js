@@ -5,9 +5,8 @@ const colors = ["darkred","orange","darkgreen","darkblue"];
 const symbols = ["0","1","2","3","4","5","6","7","8","9","reverse","block","p2"];
 const jokers = ["changeColor","p4"];
 
-let turn = 5000;
+let turn = 7000;
 let direction = 1;
-let isMyTurn = false;
 
 const players = [];
 
@@ -89,6 +88,36 @@ function startTable() {
     }
 }
 
+function renderDeck() {
+
+    let deckObject = document.getElementById("deck");
+
+    let symbolHTML;
+    
+    let carta = deck[0];
+
+    if ( carta.symbol == "reverse" ) symbolHTML = '<ion-icon name="refresh-outline"></ion-icon>';
+    else if ( carta.symbol == "block" ) symbolHTML = '<ion-icon name="ban-outline"></ion-icon>';
+    else if ( carta.symbol == "changeColor" ) symbolHTML = '<ion-icon name="color-palette-outline"></ion-icon>';
+    else if ( carta.symbol == "p2" ) symbolHTML = `<p>+2</p>`;
+    else if ( carta.symbol == "p4" ) symbolHTML = `<p>+4</p>`;
+    else symbolHTML = `<p>${carta.symbol}</p>`;
+
+    deckObject.innerHTML = `
+
+    <div class="card verso">
+        <div class="logo">
+            &#960
+        </div>
+    </div>
+    <div style="background-color: ${carta.color};" class="card frente">
+        <div class="logo">
+            ${symbolHTML}
+        </div>
+    </div>
+    `;
+}
+
 function renderTable() {
     let tableCard = document.getElementById("tableCard");
 
@@ -111,21 +140,36 @@ function renderTable() {
     </div>
     `;
 }
-/* 
+
 function sortCardsOnContainer(){
 
-    const parentEl = document.getElementById("cardsContainer");
+    let container = document.querySelector(".cards-container");
+    let cards = [...container.children];
 
-    let cards = document.getElementsByClassName("card"),
-    cw = parentEl.clientWidth*0.8,
-    sw = parentEl.scrollWidth,
-    diff = sw - cw,
-    offset = diff / (cards.length - 1);
+    if (players[0].length == 0) return;
 
-  for (let i = 1; i < cards.length; i++) {
-    cards[i].style.transform = "translateX(-" + offset * i + "px)";
-  }
-} */
+    let numCards = cards.length;
+    let cardWidth = 110;
+
+    let containerWidth = container.clientWidth;
+    let windowWidth = window.innerWidth;
+
+    let desiredWidth = numCards*cardWidth - 8 * (numCards-3);
+
+    if ( desiredWidth <= windowWidth && desiredWidth <= containerWidth ) return;
+
+    let offset;
+
+    if ( desiredWidth >  windowWidth) {
+        offset = ( cards.length * cardWidth - windowWidth ) / ( cards.length - 3 );
+    } else {
+        offset = 8;
+    }
+    cards[0].style.marginLeft = `0px`;
+    for (let i = 1; i < cards.length; i++) {
+        cards[i].style.marginLeft = `-${offset}px`;
+    }
+}
 
 function renderUserCards() {
     let cardsContainer = document.getElementById("cardsContainer");
@@ -153,7 +197,7 @@ function renderUserCards() {
         
         cont++;
     }
-    // sortCardsOnContainer();
+    sortCardsOnContainer();
 }
 
 function renderOtherPlayers() {
@@ -181,12 +225,12 @@ function takeCard() {
 
     players[currentPlayer] = organizeCards(players[currentPlayer]);
 
-    return takenCard;
+    return takenCard[0];
 }
 
 function handleClick(cardObject) {
 
-    if (!isMyTurn) return;
+    if (turn%4 != 0) return;
 
     const cardsContainer = document.getElementById("cardsContainer");
     const myCards = [...cardsContainer.querySelectorAll(".card")];
@@ -201,13 +245,13 @@ function handleClick(cardObject) {
     table.push( selectedCard );
     players[0].splice(indexCard,1);
     myCards[indexCard].remove();
+    sortCardsOnContainer();
     renderTable();
 
     // table array updated
     // cards array updated
     // screen updated: table and cards container
 
-    isMyTurn = false;
     myCards.forEach( card => card.classList.remove("my-turn") );
 
     // efect of my turn removed
@@ -227,6 +271,16 @@ function isValidCard(card) {
 }
 
 function handleTurn() {
+
+    console.log(deck.length);
+
+    for (let i = 0; i < players.length ; i++ ){
+        let player = players[i];
+        if (player.length == 0) {
+            console.log(`PLAYER ${i+1} WINS!!`);
+            return;
+        }
+    }
 
     for (let i = 1 ; i < 4 ; i++){
         let turnOfObj = document.querySelector(".player-"+(i+1));
@@ -260,30 +314,60 @@ function takeCardActions() {
     currentPlayer = turn%4;
 
     if (currentPlayer == 0) {
-        setTimeout(() => {
-            console.log(`You're taking a card`);
-        },1500);
+        console.log("You have not cards to place");
+        let deckObject = document.getElementById("deck");
+        deckObject.classList.add("my-time");
+        renderDeck();
     } else {
         setTimeout(() => {
             console.log(`Player ${currentPlayer+1} is taking a card`);
-        },1500);
+            let takenCard = takeCard();
+            if ( !isValidCard(takenCard) ){
+                setTimeout(() => {
+                    renderOtherPlayers();
+                    console.log(`Player ${currentPlayer+1} has not cards to place`);
+                    turn += direction;
+                    handleTurn();
+                    return;
+                },1500)
+            } else {
+                setTimeout(() => {
+                    renderOtherPlayers();
+                    placeCardActions();
+                },1200);
+            }
+        },1000);
     }
+}
 
-    if (currentPlayer == 0) {
+function turnDeckCard(deckObject) {
+
+    if ( !deckObject.classList.contains("my-time") ) return;
+
+    deckObject.classList.toggle("turned");
+
+    let takenCard = takeCard();
+
+    if ( !isValidCard(takenCard) ){
+        console.log("Can not place this card");
         setTimeout(() => {
-            takeCard();
-            turn += direction;
+            deckObject.classList.toggle("turned");
             renderUserCards();
-            handleTurn();
-        },4000);
-    } else {
-        setTimeout(() => {
-            takeCard();
             turn += direction;
-            renderOtherPlayers();
             handleTurn();
-        },4000);
+        },1200);
+    } else {
+        console.log("Placing card");
+        setTimeout(() => {
+            deckObject.classList.toggle("turned");
+            let indexCard = players[0].findIndex(card => card == takenCard);
+            table.push( takenCard );
+            players[0].splice(indexCard,1);
+            renderTable();
+            handlePowerUps(takenCard);
+        },1200)
     }
+    deckObject.classList.remove("my-time");
 }
 
 function placeCardActions(){
@@ -293,9 +377,8 @@ function placeCardActions(){
     if (currentPlayer==0) {
 
         console.log("It's your time!");
-        let cards = document.querySelectorAll(".cards-container .card");
+        let cards = [...document.querySelector(".cards-container").children];
         cards.forEach( card => card.classList.add("my-turn") );
-        isMyTurn = true;
 
     } else {
         //logic for the other players...
@@ -478,6 +561,7 @@ startTable();
 renderTable();
 renderUserCards();
 renderOtherPlayers();
+renderDeck();
 
 handleTurn();
 

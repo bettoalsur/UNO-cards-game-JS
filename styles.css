@@ -1,7 +1,10 @@
 
 body {
     background-color: rgb(156, 156, 156);
+    overflow: hidden;
 }
+
+/* sentido de giro */
 
 .table {
     display: flex;
@@ -26,6 +29,8 @@ body {
     transform: rotateY(180deg);
 }
 
+/* espacao para carta na mesa */
+
 .table-card {
     display: flex;
     align-items: center;
@@ -37,21 +42,22 @@ body {
     transform: translateY(-50%);
 }
 
+/* espaco para cartas do usuario */
+
 .cards-container {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    /* max-width: 100%; */
-    /* flex: 0 0 50px; */
-    /* overflow: hidden; */
-    /* overflow-x: scroll; */
+    /* background-color: salmon; */
 
     position: absolute;
     bottom: 0px;
     left: 50%;
     transform: translateX(-50%);
 }
+
+/* todas as cartas visiveis */
 
 .card {
     min-width: 110px;
@@ -64,20 +70,36 @@ body {
 
     border: 1px solid black;
     border-radius: 7px;
-    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8);
-
-    margin: 10px 4px;
+    box-shadow: -1px 2px 4px rgba(0, 0, 0, 0.8);
 
     transition: all 0.5s;
 
     z-index: 0;
 }
 
+.cards-container .card {
+    margin-bottom: -10px;
+    margin-left: -8px;
+}
+
+.cards-container .card:first-child {
+    margin-left: 0px;
+}
+
+
+/* efeitos para quando é a vez do usuario */
+
 .my-turn.card:hover {
-    box-shadow: 1px 11px 13px rgba(0,0,0,0.8);
+    box-shadow: -1px 11px 12px rgba(0,0,0,0.85);
     transform: translateY(-20px);
     cursor: pointer;
 }
+
+.my-turn.card:hover ~ .card {
+    transform: translateX(7.5px);
+}
+
+/* elipse no meio da carta */
 
 .card:before {
     content: "";
@@ -97,6 +119,8 @@ body {
 
     z-index: 1;
 }
+
+/* simbolo da carta */
 
 .logo {
     color: white;
@@ -147,6 +171,10 @@ body {
     top: 50%;
     transform: translateY(-50%);
 }
+
+/*  */
+/*  */
+/*  */
 
 .choose-color-window {
     background-color: rgba(43, 43, 43, 0.788);
@@ -238,3 +266,43 @@ body {
     background-color: rgb(0, 0, 185);
     filter: drop-shadow( 4px 4px 4px rgba(0,0,0,0.8));
 }
+
+/*  */
+/*  */
+/*  */
+
+.deck {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.deck .card.frente {
+    transform: scale(0.9) rotateY(180deg);
+    margin: 5px 5px;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+}
+
+.deck .card.verso {
+    background-color: rgb(145, 107, 107); 
+    transform: scale(0.9);
+    margin: 5px 5px;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+}
+
+.deck.my-time .card.verso:hover {
+    cursor: pointer;
+}
+
+.deck.turned .card.frente {
+    transform: scale(0.9) rotateY(0deg);
+}
+
+.deck.turned .card.verso {
+    transform: scale(0.9) rotateY(180deg);
+}
+
