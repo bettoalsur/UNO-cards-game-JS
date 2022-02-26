@@ -1,6 +1,9 @@
 
 body {
     background-color: #e2e2e2;
+    min-height: 100vh;
+    background: rgb(255,255,255);
+    background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,230,230,1) 100%);
     overflow: hidden;
 }
 
@@ -20,14 +23,29 @@ body {
 .table ion-icon {
     font-size: 440px;
     opacity: 0.4;
+
     filter: drop-shadow( 3px 3px 3px rgba(0,0,0,0.8));
     -webkit-filter: drop-shadow( 3px 3px 3px rgba(0,0,0,0.8));
-    transform: rotateY(0deg);
-    transition: transform 0.5s;
+
+    animation: mymove 10s linear infinite;
+    -webkit-animation: mymove 10s linear infinite;
+
+    transform-origin: 50% 58%;
+}
+
+@keyframes mymove {
+    0%   {transform: rotateY(0deg) rotateZ(0deg);}
+    100% {transform: rotateY(0deg) rotateZ(360deg);}
+}
+
+@keyframes mymove2 {
+    0%   {transform: rotateY(180deg) rotateZ(0deg);}
+    100% {transform: rotateY(180deg) rotateZ(3600deg);}
 }
 
 .inverse.table ion-icon {
-    transform: rotateY(180deg);
+    animation: mymove2 100s linear infinite;
+    -webkit-animation: mymove2 100s linear infinite;
 }
 
 /* espacao para carta na mesa */
@@ -41,6 +59,11 @@ body {
     top: 50%;
     left: calc( 50% - 57px );
     transform: translateY(-50%);
+}
+
+.table-card .card {
+    position: absolute;
+    left: 50%;
 }
 
 /* espaco para cartas do usuario */
@@ -90,14 +113,22 @@ body {
 
 /* efeitos para quando é a vez do usuario */
 
-.my-turn.card:hover {
+.my-turn.card {
     box-shadow: -1px 11px 12px rgba(0,0,0,0.85);
-    transform: translateY(-20px);
+    transform: translateY(-7px);
     cursor: pointer;
 }
 
 .my-turn.card:hover ~ .card {
-    transform: translateX(7.5px);
+    transform: translateX(7px);
+}
+
+.my-turn.card:hover ~ .my-turn.card {
+    transform: translateX(7px) translateY(-7px);
+}
+
+.my-turn.card:hover {
+    transform: translateY(-14px);
 }
 
 /* elipse no meio da carta */
@@ -352,8 +383,17 @@ body {
 }
 
 .deck.my-time .card.verso {
-    border: 1px solid orangered;
-    box-shadow: 0px 0px 10px rgb(252, 135, 40);;
+    border: 1px solid rgb(7, 177, 83);
+    box-shadow: 0px 0px 10px rgb(40, 252, 135);
+    
+    animation: my-deck-animation 1s infinite;
+    -webkit-animation: my-deck-animation 1s infinite;
+}
+
+@keyframes my-deck-animation {
+    0% { transform: scale(0.9); }
+    50% {transform: scale(0.92); }
+    100% {transform: scale(0.9); }
 }
 
 .deck.my-time .card.verso:hover {

@@ -120,11 +120,16 @@ function renderDeck() {
 
 function renderTable() {
 
-    let tableCard = document.getElementById("tableCard");
+    let tableCardObject = document.getElementById("tableCard");
+    let numCards = tableCardObject.children.length;
 
-    let symbolHTML;
-    
     let carta = table[table.length-1];
+
+    let angle;
+    if (numCards == 0 || carta.symbol == "p4" || carta.symbol == "changeColor") angle = 0;
+    else angle = ( Math.random() - 0.5 ) * 2 * 15;
+    
+    let symbolHTML;
 
     if ( carta.symbol == "reverse" ) symbolHTML = '<ion-icon name="refresh-outline"></ion-icon>';
     else if ( carta.symbol == "block" ) symbolHTML = '<ion-icon name="ban-outline"></ion-icon>';
@@ -133,13 +138,16 @@ function renderTable() {
     else if ( carta.symbol == "p4" ) symbolHTML = `<p>+4</p>`;
     else symbolHTML = `<p>${carta.symbol}</p>`;
 
-    tableCard.innerHTML = `
-    <div style="background-color: ${carta.color};" class="card">
+    tableCardObject.innerHTML += `
+    <div style="background-color: ${carta.color}; transform: rotateZ(${angle}deg);" class="card">
         <div class="logo">
             ${symbolHTML}
         </div>
     </div>
     `;
+
+    numCards = tableCardObject.children.length;
+    if (numCards == 6) tableCardObject.children[0].remove();
 
     let turnLogo = document.querySelector(".table ion-icon");
     turnLogo.style.color = carta.color;
@@ -380,8 +388,14 @@ function placeCardActions(){
     if (currentPlayer==0) {
 
         console.log("It's your time!");
-        let cards = [...document.querySelector(".cards-container").children];
-        cards.forEach( card => card.classList.add("my-turn") );
+        let cardsObject = [...document.querySelector(".cards-container").children];
+        let cardsInfo = players[0];
+
+        if (cardsObject.length != cardsInfo.length) console.log("SOMETHING WENT WRONG!");
+
+        for(let i = 0; i < cardsInfo.length ; i++) {
+            if(isValidCard(cardsInfo[i])) cardsObject[i].classList.add("my-turn");
+        }
 
     } else {
         //logic for the other players...
